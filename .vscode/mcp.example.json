@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "jenkins": {
+      "type": "stdio",
+      "command": "${workspaceFolder}/.venv/Scripts/jenkins-mcp.exe",
+      "env": { "JENKINS_MCP_HOME": "${workspaceFolder}" }
+    }
+  }
+}

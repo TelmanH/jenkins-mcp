@@ -1,0 +1,47 @@
+# Copy to config/jenkins_instances.yaml and adjust.
+# Secrets never go here: user/token are read from the env variables named below (config/.env).
+# After editing, call the tool list_instances(reload_config=true) - no restart needed.
+# Problems in this file are reported by list_instances under "config_errors" (entry + reason).
+
+default: main                    # used when a tool call does not name an instance
+
+defaults:                        # applied to every instance (can be overridden per instance)
+  verify_tls: true
+  # ca_bundle: certs/internal-ca.pem   # PEM of an internal CA (relative to this file); preferred over verify_tls: false
+  timeout: 60                    # seconds per request
+  # proxy: http://proxy.example.com:80   # per instance or here; 'none' = direct (ignores HTTPS_PROXY);
+                                         # empty = HTTPS_PROXY / NO_PROXY environment variables
+
+instances:
+  main:
+    url: https://jenkins.example.com/
+    description: Main CI/CD Jenkins
+    # -> JENKINS_MAIN_USER in config/.env; JENKINS_MAIN_TOKEN from VS Code (setup.ps1 prompt) or config/.env
+    # proxy: none                 # e.g. internal Jenkins reachable without the company proxy
+    # exclude_folders: [archive]   # skip folders in list_jobs / failures_overview
+  # staging:
+  #   url: https://jenkins-staging.example.com/
+  #   user_env: MY_USER_VAR      # optional: custom env variable names
+  #   token_env: MY_TOKEN_VAR
+
+log_analysis:
+  # Your rules are checked BEFORE the built-in ones (src/jenkins_mcp/rules/default_rules.yaml).
+  # Keys: category, severity, regex ('pattern' also accepted).
+  # severity: high = root-cause candidate | medium = ranked after all high errors | low = hidden by default
+  # Use SINGLE quotes: '\d' stays a regex \d. Prefer specific phrases over generic words:
+  # a 'high' rule on 'ERROR' makes every line a root-cause candidate.
+  extra_error_patterns:
+    - category: database
+      severity: high
+      regex: 'SQLSTATE=\d+|ORA-\d{5}'
+    # - category: installer
+    #   severity: high
+    #   regex: 'Installation FAILED|InstallerException'
+  ignore_patterns: []              # lines that look like errors but are not
+  noise_patterns: []               # lines hidden from tails/summaries (still searchable)
+
+knowledge:
+  dir: ../knowledge                # team knowledge base (relative to this file, or absolute)
+
+node_health:
+  disk_warn_gb: 10

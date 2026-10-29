@@ -1,0 +1,9 @@
+{
+  // Developers: tests appear in the Testing panel (beaker icon). The Python extension picks up
+  // .venv automatically; if not: Ctrl+Shift+P -> "Python: Select Interpreter" -> .venv
+  // (created by setup\windows\setup.ps1 -Dev or tests/macos/setup.sh).
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestArgs": ["tests"],
+  "python.terminal.activateEnvironment": true
+}

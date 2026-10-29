@@ -1,0 +1,10 @@
+services:
+  jenkins:
+    build: .
+    container_name: jenkins-mcp-live
+    ports:
+      - "127.0.0.1:8080:8080"   # localhost only: the test Jenkins uses admin/admin
+    volumes:
+      - jenkins_home:/var/jenkins_home
+volumes:
+  jenkins_home:

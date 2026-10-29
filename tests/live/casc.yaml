@@ -1,0 +1,22 @@
+jenkins:
+  systemMessage: "jenkins-mcp LIVE TEST instance (throw-away)"
+  numExecutors: 2
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: admin
+          password: admin
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+unclassified:
+  location:
+    url: http://localhost:8080/
+  globalConfigFiles:            # Config File Provider: a managed file for read_managed_file
+    configs:
+      - custom:
+          id: live-settings
+          name: "Live settings"
+          comment: "jenkins-mcp live test"
+          content: "user=deployer\npassword=liveSecret1\n"

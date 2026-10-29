@@ -1,0 +1,7 @@
+cloudbees-folder
+workflow-aggregator
+pipeline-stage-view
+junit
+configuration-as-code
+jobConfigHistory
+config-file-provider

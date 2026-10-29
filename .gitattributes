@@ -1,0 +1,5 @@
+# Keep Unix line endings for files used on Linux/macOS or inside the Docker container,
+# even when the repository is checked out on Windows (core.autocrlf=true).
+*.sh            text eol=lf
+tests/live/*    text eol=lf
+*.ps1           text eol=crlf

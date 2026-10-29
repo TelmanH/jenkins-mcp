@@ -1,0 +1,35 @@
+Started by user Test User
+[Pipeline] stage
+[Pipeline] { (Checkout)
+16:01:55  bash: warning: setlocale: LC_ALL: cannot change locale (en_US.iso88591): No such file or directory
+[Pipeline] }
+[Pipeline] stage
+[Pipeline] { (Deploy Application)
+Running on deploy-agent-01 in /home/deploy/workspace/app-install
+16:02:01  ../env/.profile: line 35: /home/deploy/bin/cygpath: No such file or directory
+16:02:01  ../env/.profile: line 51: /home/deploy/bin/apppwd: No such file or directory
+16:02:01  ../env/.profile: line 52: /home/deploy/bin/appuname: No such file or directory
+16:32:03  [ ERROR: 
+16:32:03  => Database drop/create is starting.
+16:32:03  => The log is written to /home/deploy/work/app/logs/db/drop_create.log
+16:32:03  20261019-161703 - Drop CORE                       in DB: DEV01  User: ******  Schema: CORE
+16:32:03  20261019-161730 - Create CORE                     in DB: DEV01  User: ******  Schema: CORE
+16:32:03  20261019-163129 - Create REPORTING               in DB: DEV01  User: ******  Schema: RPT
+16:32:03  WARNING: Errors occurred during execution.
+16:32:03  Please check the log file /home/deploy/work/app/logs/db/drop_create.log.
+16:32:03   ]
+16:32:03  [ ERROR: The installation was not completed ]
+16:32:03  [ Unpacking finished ]
+16:32:03  com.example.installer.InstallerException: Unpack failed (xml line 53)
+16:32:03  com.example.installer.InstallerException: Unpack failed (xml line 53)
+16:32:03  	at com.example.installer.panels.AutomationHelper.runAutomated(Unknown Source)
+16:32:03  	at com.example.installer.AutomatedInstaller.installPanel(Unknown Source)
+16:32:03  	at com.example.installer.AutomatedInstaller.doInstall(Unknown Source)
+16:32:03  	at com.example.installer.Installer.main(Unknown Source)
+16:32:03  [ Automated installation FAILED! ]
+16:32:03  [ERROR] - Database drop/create failed on deploy-agent-01:
+16:35:10  Failed to connect to the controller: The controller is not available at localhost:9990: java.net.ConnectException: WFLYPRT0053: Could not connect to remote+http://localhost:9990. The connection failed: Connection refused
+16:38:12  Errors occurred during the installation
+[Pipeline] }
+ERROR: Deployment failed
+Finished: FAILURE

@@ -1,0 +1,84 @@
+# Built-in log analysis rules.
+# Your own rules (log_analysis.extra_error_patterns in jenkins_instances.yaml) are checked FIRST,
+# these afterwards. First matching rule wins.
+#
+# severity (ranking order for "likely root cause"):
+#   high   = specific error, can be a root cause
+#   medium = generic error line no specific rule knows; ranked after every high error
+#   warn   = automatic: a high/medium line that starts with WARN/WARNING (often retries)
+#   low    = generic wrapper message ("exit code 1"); hidden in get_log_errors by default
+#
+# Write regexes in SINGLE quotes: backslashes stay literal ('\d' is the regex \d).
+# Inside single quotes a single quote is written twice: 'can''t'.
+
+rules:
+  - category: tests
+    severity: high
+    regex: 'Tests run: \d+, Failures: (?:[1-9]\d*, Errors: \d+|\d+, Errors: [1-9])'
+
+  - category: maven
+    severity: high
+    regex: 'BUILD FAILURE|Failed to execute goal|Could not (?:resolve|transfer|find) (?:dependencies|artifact)|\[ERROR\] \S'
+
+  - category: nexus
+    severity: high
+    regex: 'Return code is: [45]\d\d|Failed to deploy artifacts|ReasonPhrase: '
+
+  - category: java
+    severity: high
+    regex: '^\s*Caused by: |Exception in thread |OutOfMemoryError|^\s*[\w$.]*[\w$](?:Exception|Error)(?:: |$)|\b(?:[a-z][\w$]*\.)+[A-Z][\w$]*(?:Exception|Error)\b'
+
+  - category: helm
+    severity: high
+    regex: 'Error: (?:UPGRADE FAILED|INSTALLATION FAILED|INSTALL FAILED|template:|rendered manifests|.*chart)|helm\.go:\d+'
+
+  - category: k8s
+    severity: high
+    regex: 'CrashLoopBackOff|ImagePullBackOff|ErrImagePull|OOMKilled|\bEvicted\b|FailedScheduling|timed out waiting for the condition|context deadline exceeded|error: (?:unable|the server)|Error from server'
+
+  - category: ansible
+    severity: high
+    regex: 'fatal: \[|FAILED! =>|UNREACHABLE!|^ERROR! |\bfailed=[1-9]|\bunreachable=[1-9]'
+
+  - category: docker
+    severity: high
+    regex: 'denied: |manifest unknown|no space left on device|failed to solve|toomanyrequests|pull access denied|Error response from daemon'
+
+  - category: network
+    severity: high
+    regex: 'Connection (?:refused|timed out|reset)|UnknownHostException|Name or service not known|SSLHandshakeException|PKIX path building failed|certificate verify failed|\b(?:401 Unauthorized|403 Forbidden|502 Bad Gateway|503 Service Unavailable|504 Gateway Time-?out)'
+
+  - category: system
+    severity: high
+    regex: 'Permission denied|command not found|No such file or directory|Too many open files|\bKilled\b'
+
+  - category: jenkins
+    severity: low
+    regex: 'script returned exit code [1-9]|hudson\.AbortException|FlowInterruptedException|Timeout has been exceeded|^ERROR: |Finished: (?:FAILURE|UNSTABLE|ABORTED)|skipped due to earlier failure'
+
+  # Catch-all, checked LAST: a line that starts like an error message but matched no rule above,
+  # e.g. 'Error: deploy target unreachable', 'fatal: repository not found', 'error[E0308]: ...',
+  # 'npm ERR! ...', 'FAILURE: Build failed with an exception.'. Anchored at the line start so
+  # prose such as 'no error found' or 'errors: 0' does not match.
+  - category: generic
+    severity: medium
+    regex: '(?i)^\s*(?:error|fatal)(?:\[[\w-]+\])?(?: *:| +- )\s*\S|^npm ERR! |^FAILURE: |^BUILD FAILED\b'
+
+# Lines that look like errors but are not (never reported)
+ignore:
+  - '\b0 errors?\b'
+  - 'Failures: 0, Errors: 0'
+  - 'maven\.test\.failure\.ignore'
+  - '\[ERROR\] *$'
+  - '\[ERROR\] -> \[Help'
+  - '\[ERROR\] (?:To see the full stack|Re-run Maven|For more information|Help 1)'
+
+# Lines hidden from tails/summaries (still searchable with search_log / get_log_lines)
+noise:
+  - '^\[Pipeline\] '
+  - '^(?:\[INFO\] )?Download(?:ing|ed) from '
+  - '^(?:\[INFO\] )?Progress \(\d+\)'
+  - '^\s*$'
+  - '^Masking supported pattern'
+  - '^\[INFO\] -{10,}$'
+  - '^\+ set \+x$'

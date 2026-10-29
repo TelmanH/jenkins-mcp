@@ -1,0 +1,37 @@
+# ---- secrets: never commit ----
+.env
+*.env
+!*.env.example
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+certs/
+tests/live/.token
+
+# ---- your local settings (templates *.example are committed) ----
+config/jenkins_instances.yaml
+.mcp.json
+.vscode/mcp.json
+.vscode/mcp.json.bak
+
+# ---- your team's knowledge base: keep it in a PRIVATE repo (JENKINS_MCP_KB_DIR) ----
+# Only README.md and TEMPLATE.md of knowledge/ are public.
+knowledge/KB-*.md
+knowledge/drafts/*.md
+
+# ---- python / tools ----
+.venv/
+__pycache__/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.coverage
+.mypy_cache/
+.ruff_cache/
+
+# Claude Code local settings (plugins etc.)
+.claude/
