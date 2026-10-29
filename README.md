@@ -186,13 +186,16 @@ See [SECURITY.md](SECURITY.md) for the threat model and how to report a vulnerab
 
 ## Roadmap
 
-- Check the company instances (older Jenkins/plugin versions, folders, agents): the managed-files page, Pipeline
-  Workspaces page, replay page, Job Config History, wfapi step logs and pending inputs passed the live Docker test
-  (Jenkins 2.580.1), but page markup can differ between versions.
+- Release 1.1.0: the live Docker test (Jenkins 2.580.1) and a manual Windows / VS Code Copilot run against real
+  instances passed. Set the package status back to `5 - Production/Stable`, turn `Unreleased` in CHANGELOG.md into
+  `1.1.0`, tag `v1.1.0` and publish a GitHub release.
 - Replace the module-level singletons (`config`, knowledge base cache, log LRU, job tree cache) with one application
   context object, and pass log rules into `logs/` instead of reading the global config there.
 - CI pipeline on Windows: ruff, mypy, pytest.
-- More read tools: plugin versions, node env/PATH (system info, needs admin), Jenkinsfile and JCasC history from
+- Read-only plugin tools: installed plugins and versions, plugins with problems (missing dependencies), available
+  updates. `/pluginManager/api/json?depth=1` usually needs Overall/SystemRead or Administer: check it with a normal
+  user's token first; without that permission the tools would only return 403.
+- More read tools: views, node env/PATH (system info, needs admin), Jenkinsfile and JCasC history from
   Git (Bitbucket).
 - Optional HTTP transport for one shared team server (needs authentication / a gateway).
 - Human-in-the-loop write actions (not implemented): `plan_*` tool -> one-time token ->
