@@ -31,7 +31,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=9.1.1", "pytest-asyncio>=1.4.0", "pytest-cov>=7.1.0", "responses>=0.26.3", "mypy>=1.10", "types-PyYAML", "types-requests"]
+dev = ["pytest>=9.1.1", "pytest-asyncio>=1.4.1", "pytest-cov>=7.1.0", "responses>=0.26.3", "mypy>=1.10", "types-PyYAML", "types-requests"]
 
 [project.scripts]
 jenkins-mcp = "jenkins_mcp.main:run"
