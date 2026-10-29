@@ -117,6 +117,13 @@ global config read inside `logs/` are planned to move into one application conte
 - `tests/live/` is a standalone script (pytest skips it); it needs Docker. Behaviour that depends on a real
   Jenkins also gets a check in `tests/live/live_test.py`.
 
+## Status and next steps
+
+- Verified by the live Docker test and a manual Windows / VS Code Copilot run against real instances.
+- Planned next (details in the README roadmap): the 1.1.0 release (package status back to Stable, CHANGELOG,
+  tag) and read-only plugin tools, which need a check that the users' tokens can read `/pluginManager/api/json`.
+- `main` is protected: every change goes through a branch and a PR with green Ubuntu/Windows/gitleaks checks.
+
 ## Docs to keep in sync
 
 - README.md has the tool table, the env var table and the tool count.
