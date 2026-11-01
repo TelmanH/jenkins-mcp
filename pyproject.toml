@@ -26,7 +26,7 @@ classifiers = [
 dependencies = [
     "fastmcp>=4.1.4,<5",         # 4.x runs sync tools in worker threads (blocking HTTP does not stall the server)
     "requests>=2.34.2",
-    "python-dotenv>=1.0",
+    "python-dotenv>=1.2.4",
     "PyYAML>=6.0.3",
 ]
 
